@@ -1,5 +1,5 @@
-from personagens import guerreiro, magos
-from menus import menu_guerreiro, menu_magos 
+from personagens import guerreiro, magos, atirador, bardo
+from menus import menu_atirador, menu_guerreiro, menu_magos, menu_bardo
 
 def menu():
 
@@ -21,25 +21,10 @@ def menu():
         menu_magos.submenu_magos()
 
      if resp == 3 :
-        while True: 
-            print('===Escolha sua classe===')
-            print('[1] Arqueiro.')
-            print('[2] Lancador.')
-            print('[3] Voltar.')
-            resp3 = int(input('Sua opcao: '))
-            if  resp3 == 3: 
-              break
+       menu_atirador.submenu_atirador()
 
      if resp == 4 :
-        
-        while True: 
-            print('===Escolha sua classe===')
-            print('[1] Virtuoso.')
-            print('[2] Harpista.')
-            print('[3] Voltar.')
-            resp4 = int(input('Sua opcao: '))
-            if  resp4 == 3: 
-              break
+      menu_bardo.submenu_bardo()
 
     print(p.info())
 

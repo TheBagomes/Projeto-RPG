@@ -1,18 +1,18 @@
-from personagens import magos
+from personagens import bardo
 
 # personagens_criados = [] 
 
-def submenu_magos(): 
-    while True: 
+def submenu_bardo(): 
+     
+        while True: 
             print('===Escolha sua classe===')
-            print('[1] Mago de Fogo.')
-            print('[2] Mago de Gelo.')
-            print('[3] Mago de Raio.')
-            print('[4] Voltar.')
-            resp2 = int(input('Sua opcao: '))
-            if  resp2 == 4: 
+            print('[1] Virtuoso.')
+            print('[2] Harpista.')
+            print('[3] Voltar.')
+            resp4 = int(input('Sua opcao: '))
+            if  resp4 == 3: 
               break
-            p = magos(resp2)
+            p = bardo(resp4)
 
 # def criar_personagem(classe_personagem):
 #     nome = input("Digite o nome do personagem: ")
