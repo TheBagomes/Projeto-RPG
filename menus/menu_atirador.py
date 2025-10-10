@@ -1,29 +1,49 @@
-from personagens import atirador
+from personagens.atirador import Atirador
 
-# personagens_criados = [] 
+personagens_criados = [] 
 
 def submenu_atirador(): 
+     
      while True: 
             print('===Escolha sua classe===')
             print('[1] Arqueiro.')
             print('[2] Lancador.')
             print('[3] Voltar.')
+            
             resp3 = int(input('Sua opcao: '))
-            if  resp3 == 3: 
+                        
+            if resp3 == 1: 
+              criar_personagem(Atirador)
+            elif resp3 == 2: 
+                criar_personagem(Atirador)  
+            elif resp3 == 3: 
               break
-            p = atirador(resp3)
-
-# def criar_personagem(classe_personagem):
-#     nome = input("Digite o nome do personagem: ")
-#     personagem = classe_personagem(nome)
-#     personagens_criados.append(personagem)
-#     print(f"{personagem.info()} criado com sucesso!")
-
-# def mostrar_personagens():
-#     if not personagens_criados:
-#         print("Nenhum personagem criado ainda.")
-#     else:
-#         print("\n=== Personagens Criados ===")
-#         for p in personagens_criados:
-#             print(p.info())
+            else:
+               print('Opcão inválida.')
+            break
+            
+def criar_personagem(classe_personagem):
+    nome = input("Digite o nome do personagem: ")
+    try:   
+      personagem = classe_personagem(nome)
+    except Exception as e: 
+      print("Erro ao criar personagem.", e)
+      return
+    
+    personagens_criados.append(personagem) 
+    
+    try: 
+     info_texto = personagem.info()
+    except Exception: 
+     info_texto = getattr(personagem, 'nome', '<sem-nome>')
+    
+    print(f"{info_texto} criado com sucesso!")   
+    
+def mostrar_personagens():
+    if not personagens_criados:
+        print("Nenhum personagem criado ainda.")
+    else:
+        print("\n=== Personagens Criados ===")
+        for p in personagens_criados:
+            print(p.info())
 

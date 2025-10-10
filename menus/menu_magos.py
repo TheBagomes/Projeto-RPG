@@ -1,8 +1,9 @@
-from personagens import magos
+from personagens.magos import Magos
 
-# personagens_criados = [] 
+personagens_criados = [] 
 
 def submenu_magos(): 
+
     while True: 
             print('===Escolha sua classe===')
             print('[1] Mago de Fogo.')
@@ -10,21 +11,40 @@ def submenu_magos():
             print('[3] Mago de Raio.')
             print('[4] Voltar.')
             resp2 = int(input('Sua opcao: '))
-            if  resp2 == 4: 
-              break
-            p = magos(resp2)
 
-# def criar_personagem(classe_personagem):
-#     nome = input("Digite o nome do personagem: ")
-#     personagem = classe_personagem(nome)
-#     personagens_criados.append(personagem)
-#     print(f"{personagem.info()} criado com sucesso!")
+            if resp2 == 1: 
+              criar_personagem(Magos)
+            elif resp2 == 2: 
+                criar_personagem(Magos)  
+            elif resp2 == 3: 
+                criar_personagem(Magos)
+            elif resp2 == 4: 
+                break
+            else:
+               print('Opcão inválida.')
+            break
 
-# def mostrar_personagens():
-#     if not personagens_criados:
-#         print("Nenhum personagem criado ainda.")
-#     else:
-#         print("\n=== Personagens Criados ===")
-#         for p in personagens_criados:
-#             print(p.info())
-
+def criar_personagem(classe_personagem):
+    nome = input("Digite o nome do personagem: ")
+    try:   
+      personagem = classe_personagem(nome)
+    except Exception as e: 
+      print("Erro ao criar personagem.", e)
+      return
+    
+    personagens_criados.append(personagem) 
+    
+    try: 
+     info_texto = personagem.info()
+    except Exception: 
+     info_texto = getattr(personagem, 'nome', '<sem-nome>')
+    
+    print(f"{info_texto} criado com sucesso!")   
+    
+def mostrar_personagens():
+    if not personagens_criados:
+        print("Nenhum personagem criado ainda.")
+    else:
+        print("\n=== Personagens Criados ===")
+        for p in personagens_criados:
+            print(p.info())

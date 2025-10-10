@@ -3,29 +3,25 @@ from personagens.guerreiro import Guerreiro
 personagens_criados = [] 
 
 def submenu_guerreiros(): 
+
     while True: 
             print('===Escolha sua classe===')
             print('[1] Tank.')
             print('[2] Lutador.')
             print('[3] Voltar.')
           
-            try: 
-             resp = int(input('Sua opcao: '))
-            except ValueError: 
-             print('Digite um numero valido.')
-             continue
-
+            resp = int(input('Sua opcao: '))
+            
             if resp == 1: 
               criar_personagem(Guerreiro)
-
-            if resp == 2: 
+            elif resp == 2: 
                 criar_personagem(Guerreiro)  
-
-            if resp == 3: 
-              break
-            else: 
-                print('Opcao invalida. Tente novamente.')
-
+            elif resp == 3: 
+             break
+            else:
+               print('Opcão inválida.')
+            break   
+            
 def criar_personagem(classe_personagem):
     nome = input("Digite o nome do personagem: ")
     try:   
