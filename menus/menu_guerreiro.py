@@ -5,7 +5,7 @@ personagens_criados = []
 def submenu_guerreiros(): 
 
     while True: 
-            print('===Escolha sua classe===')
+            print('=== Escolha sua classe ===')
             print('[1] Tank.')
             print('[2] Lutador.')
             print('[3] Voltar.')
@@ -27,7 +27,7 @@ def criar_personagem(classe_personagem):
     try:   
       personagem = classe_personagem(nome)
     except Exception as e: 
-      print("Erro ao criar personagem.", e)
+      print("Erro ao criar personagem.", e) 
       return
     
     personagens_criados.append(personagem) 

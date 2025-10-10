@@ -4,7 +4,7 @@ from menus import menu_atirador, menu_guerreiro, menu_magos, menu_bardo
 def menu():
     
   while True:
-    print('===Criação de Personagem===')
+    print('=== Criação de Personagem ===')
     print()
     print('Escolha uma classe: ')
     print('[1] Guerreiro.')
@@ -25,8 +25,6 @@ def menu():
    
     if resp == 4 :
       menu_bardo.submenu_bardo()
-     
-    print('Fim de jogo!')
-   
+      
 if __name__ == "__main__":
     menu()

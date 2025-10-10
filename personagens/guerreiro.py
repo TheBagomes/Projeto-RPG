@@ -4,5 +4,5 @@ class Guerreiro:
         self.classe = "Guerreiro"
 
     def info(self):
-        return f"{self.nome} é um {self.classe}"
+        return f"{self.nome} foi"
 

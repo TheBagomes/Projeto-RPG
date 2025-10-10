@@ -6,7 +6,7 @@ def submenu_bardo():
 
   
     while True: 
-        print('===Escolha sua classe===')
+        print('=== Escolha sua classe ===')
         print('[1] Virtuoso.')
         print('[2] Harpista.')
         print('[3] Voltar.')

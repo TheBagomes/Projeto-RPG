@@ -5,7 +5,7 @@ personagens_criados = []
 def submenu_magos(): 
 
     while True: 
-            print('===Escolha sua classe===')
+            print('=== Escolha sua classe ===')
             print('[1] Mago de Fogo.')
             print('[2] Mago de Gelo.')
             print('[3] Mago de Raio.')
@@ -14,6 +14,13 @@ def submenu_magos():
 
             if resp2 == 1: 
               criar_personagem(Magos)
+              while True:
+                 print('Escolha suas habilidades: ')
+                 print('[1] bola de fogo')
+                 print('[2] Muralha de chamas') 
+                 resp2a = int(input('Seu poder: '))
+                 break
+
             elif resp2 == 2: 
                 criar_personagem(Magos)  
             elif resp2 == 3: 
@@ -24,6 +31,7 @@ def submenu_magos():
                print('Opcão inválida.')
             break
 
+        
 def criar_personagem(classe_personagem):
     nome = input("Digite o nome do personagem: ")
     try:   

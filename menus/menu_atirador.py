@@ -5,7 +5,7 @@ personagens_criados = []
 def submenu_atirador(): 
      
      while True: 
-            print('===Escolha sua classe===')
+            print('=== Escolha sua classe ===')
             print('[1] Arqueiro.')
             print('[2] Lancador.')
             print('[3] Voltar.')

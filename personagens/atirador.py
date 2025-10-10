@@ -4,5 +4,5 @@ class Atirador:
         self.classe = "Atirador"
 
     def info(self):
-        return f"{self.nome} é um {self.classe}"
+        return f"{self.nome} foi"
 
