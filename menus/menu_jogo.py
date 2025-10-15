@@ -1,7 +1,7 @@
 import random
 import time
 from personagens.monstros import gerar_monstro
-from personagens.habilidades import habilidades_guerreiro, habilidades_mago
+from personagens.habilidades import usar_habilidade
 
 def rolar_dado(expressao):
     qtd, lados = map(int, expressao.lower().split('d'))
@@ -24,16 +24,12 @@ def batalha(jogador):
         time.sleep(1)
 
         if jogador_rolagem > monstro_rolagem:
-          if jogador.classe == "Guerreiro":
-            habilidades_guerreiro(jogador, monstro)
-          elif jogador.classe == "Mago":
-            habilidades_mago(jogador, monstro)
-          else:
             dano = random.randint(1, jogador.ataque)
             monstro.vida -= dano
             print(f"{jogador.nome} atacou e causou {dano} de dano!")
+            usar_habilidade(jogador, monstro)
 
-        elif monstro_rolagem > jogador_rolagem:
+        if monstro_rolagem > jogador_rolagem:
             dano = random.randint(1, monstro.ataque)
             jogador.vida -= dano
             if jogador.vida < 0:

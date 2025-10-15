@@ -6,7 +6,7 @@ class Magos:
         self.vida_max = 60
         self.ataque = 6
         self.defesa = 3
-        self.mana = 40  # usada para magias
+        self.mana = 40  
 
     def info(self):
         return f"{self.nome} foi"    

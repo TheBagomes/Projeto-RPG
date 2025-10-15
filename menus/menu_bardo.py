@@ -1,4 +1,5 @@
 from personagens.bardo import Bardo
+from menus.menu_jogo import batalha
 
 personagens_criados = [] 
 
@@ -40,10 +41,4 @@ def criar_personagem(classe_personagem):
     
     print(f"{info_texto} criado com sucesso!")   
     
-def mostrar_personagens():
-    if not personagens_criados:
-        print("Nenhum personagem criado ainda.")
-    else:
-        print("\n=== Personagens Criados ===")
-        for p in personagens_criados:
-            print(p.info())
+    batalha(personagem)

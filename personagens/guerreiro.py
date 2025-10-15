@@ -11,8 +11,11 @@ class Guerreiro:
         self.energia = 30  
 
     def info(self):
-        return f"{self.nome} foi"
+        return f"{self.nome} foi "
       
     def recuperar_energia(self, valor):
         self.energia = min(self.energia + valor, 30)
 
+
+
+    
