@@ -25,6 +25,6 @@ def menu():
    
     if resp == 4 :
       menu_bardo.submenu_bardo()
-      
+         
 if __name__ == "__main__":
     menu()

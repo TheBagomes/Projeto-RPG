@@ -1,3 +1,4 @@
+from menus.menu_jogo import batalha
 from personagens.guerreiro import Guerreiro
 
 personagens_criados = [] 
@@ -37,12 +38,8 @@ def criar_personagem(classe_personagem):
     except Exception: 
      info_texto = getattr(personagem, 'nome', '<sem-nome>')
     
-    print(f"{info_texto} criado com sucesso!")   
+    print(f"{info_texto} criado com sucesso!") 
+
+    batalha(personagem)
+  
     
-def mostrar_personagens():
-    if not personagens_criados:
-        print("Nenhum personagem criado ainda.")
-    else:
-        print("\n=== Personagens Criados ===")
-        for p in personagens_criados:
-            print(p.info())
