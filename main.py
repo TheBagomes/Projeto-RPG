@@ -1,4 +1,3 @@
-from personagens import guerreiro, magos, atirador, bardo
 from menus import menu_atirador, menu_guerreiro, menu_magos, menu_bardo
 
 def menu():
