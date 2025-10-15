@@ -1,5 +1,5 @@
-from menus.menu_jogo import batalha
 from personagens.guerreiro import Guerreiro
+from menus.menu_jogo import batalha
 
 personagens_criados = [] 
 

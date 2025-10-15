@@ -1,4 +1,5 @@
 from personagens.magos import Magos
+from menus.menu_jogo import batalha
 
 personagens_criados = [] 
 
@@ -48,11 +49,7 @@ def criar_personagem(classe_personagem):
      info_texto = getattr(personagem, 'nome', '<sem-nome>')
     
     print(f"{info_texto} criado com sucesso!")   
+
+    batalha(personagem)
+  
     
-def mostrar_personagens():
-    if not personagens_criados:
-        print("Nenhum personagem criado ainda.")
-    else:
-        print("\n=== Personagens Criados ===")
-        for p in personagens_criados:
-            print(p.info())
