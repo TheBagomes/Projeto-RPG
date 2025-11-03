@@ -1,5 +1,4 @@
-# menu_principal.py
-import menu  # importa o menu interno
+import menu  
 
 def mostrar_menu_principal():
     while True:
@@ -25,7 +24,7 @@ def mostrar_menu_principal():
 
 def iniciar_jogo():
      print("\nIniciando novo jogo...\n")
-     menu.menu()  # chama a função principal do menu interno
+     menu.menu()  
 
 def carregar_jogo():
     print("\nFunção de carregar jogo ainda não implementada.\n")

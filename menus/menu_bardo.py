@@ -1,44 +1,30 @@
 from personagens.bardo import Bardo
 from menus.menu_jogo import batalha
+from database import inserir_personagem
 
 personagens_criados = [] 
 
-def submenu_bardo(): 
-
-  
-    while True: 
+def submenu_bardo():
+    while True:
         print('=== Escolha sua classe ===')
-        print('[1] Virtuoso.')
-        print('[2] Harpista.')
-        print('[3] Voltar.')
-            
-        resp4 = int(input('Sua opcao: '))
+        print('[1] Virtuoso')
+        print('[2] Harpista')
+        print('[3] Voltar')
+        resp = int(input('Sua opcao: '))
 
-        if resp4 == 1: 
-          criar_personagem(Bardo)
-        elif resp4 == 2: 
-          criar_personagem(Bardo)  
-        elif resp4 == 3: 
+        if resp in [1, 2]:
+            criar_personagem(Bardo)
+        elif resp == 3:
             break
         else:
-          print('Opcão inválida.')
-        break
-            
+            print('Opcão inválida.')
+
 def criar_personagem(classe_personagem):
     nome = input("Digite o nome do personagem: ")
-    try:   
-      personagem = classe_personagem(nome)
-    except Exception as e: 
-      print("Erro ao criar personagem.", e)
-      return
-    
-    personagens_criados.append(personagem) 
-    
-    try: 
-     info_texto = personagem.info()
-    except Exception: 
-     info_texto = getattr(personagem, 'nome', '<sem-nome>')
-    
-    print(f"{info_texto} criado com sucesso!")   
-    
+    personagem = classe_personagem(nome)
+    personagens_criados.append(personagem)
+
+    inserir_personagem(personagem)
+    print(f"{personagem.nome} ({personagem.classe}) criado e salvo no banco!")
+
     batalha(personagem)

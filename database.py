@@ -1,12 +1,10 @@
-# database.py
 import sqlite3
-from typing import List, Tuple
 
 DB_FILE = "rpg_game.db"
 
 def get_connection():
     conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row  # facilita leitura por nome de coluna, se desejar
+    conn.row_factory = sqlite3.Row
     return conn
 
 def create_tables():
@@ -17,56 +15,56 @@ def create_tables():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nome TEXT NOT NULL,
         classe TEXT NOT NULL,
-        nivel INTEGER NOT NULL DEFAULT 1,
-        vida INTEGER NOT NULL DEFAULT 100,
-        mana INTEGER NOT NULL DEFAULT 50
+        nivel INTEGER DEFAULT 1,
+        vida INTEGER DEFAULT 100,
+        vida_max INTEGER DEFAULT 100,
+        ataque INTEGER DEFAULT 10,
+        defesa INTEGER DEFAULT 5,
+        energia INTEGER DEFAULT 0,
+        mana INTEGER DEFAULT 0
     )
     """)
     conn.commit()
     conn.close()
 
-def inserir_personagem(nome: str, classe: str, nivel: int = 1, vida: int = 100, mana: int = 50) -> int:
+def inserir_personagem(p):
     conn = get_connection()
     c = conn.cursor()
+    energia = getattr(p, "energia", 0)
+    mana = getattr(p, "mana", 0)
     c.execute("""
-    INSERT INTO personagens (nome, classe, nivel, vida, mana)
-    VALUES (?, ?, ?, ?, ?)
-    """, (nome, classe, nivel, vida, mana))
+        INSERT INTO personagens (nome, classe, nivel, vida, vida_max, ataque, defesa, energia, mana)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (p.nome, p.classe, 1, p.vida, p.vida_max, p.ataque, p.defesa, energia, mana))
     conn.commit()
-    last_id = c.lastrowid
     conn.close()
-    return last_id
 
-def listar_personagens() -> List[Tuple]:
+
+def atualizar_personagem(p):
     conn = get_connection()
     c = conn.cursor()
-    c.execute("SELECT id, nome, classe, nivel, vida, mana FROM personagens ORDER BY id")
-    linhas = c.fetchall()
-    conn.close()
-    return linhas
-
-def buscar_personagem_por_id(pid: int):
-    conn = get_connection()
-    c = conn.cursor()
-    c.execute("SELECT id, nome, classe, nivel, vida, mana FROM personagens WHERE id = ?", (pid,))
-    linha = c.fetchone()
-    conn.close()
-    return linha
-
-def atualizar_personagem(pid: int, nivel: int, vida: int, mana: int):
-    conn = get_connection()
-    c = conn.cursor()
+    energia = getattr(p, "energia", 0)
+    mana = getattr(p, "mana", 0)
     c.execute("""
-    UPDATE personagens
-    SET nivel = ?, vida = ?, mana = ?
-    WHERE id = ?
-    """, (nivel, vida, mana, pid))
+        UPDATE personagens
+        SET vida=?, ataque=?, defesa=?, energia=?, mana=?
+        WHERE nome=? AND classe=?
+    """, (p.vida, p.ataque, p.defesa, energia, mana, p.nome, p.classe))
     conn.commit()
     conn.close()
 
-def deletar_personagem(pid: int):
+def listar_personagens():
     conn = get_connection()
     c = conn.cursor()
-    c.execute("DELETE FROM personagens WHERE id = ?", (pid,))
-    conn.commit()
+    c.execute("SELECT * FROM personagens")
+    dados = c.fetchall()
     conn.close()
+    return dados
+
+def buscar_personagem(id_personagem):
+    conn = get_connection()
+    c = conn.cursor()
+    c.execute("SELECT * FROM personagens WHERE id = ?", (id_personagem,))
+    p = c.fetchone()
+    conn.close()
+    return p
