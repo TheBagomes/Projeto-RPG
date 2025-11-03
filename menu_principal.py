@@ -24,11 +24,13 @@ def mostrar_menu_principal():
             print("Opção inválida, tente novamente.")
 
 def iniciar_jogo():
-    print("\nIniciando novo jogo...\n")
-    menu.menu()  # chama a função principal do menu interno
+     print("\nIniciando novo jogo...\n")
+     menu.menu()  # chama a função principal do menu interno
 
 def carregar_jogo():
     print("\nFunção de carregar jogo ainda não implementada.\n")
 
 def opcoes():
     print("\nConfigurações:\n(futuramente: som, dificuldade, idioma...)\n")
+
+
