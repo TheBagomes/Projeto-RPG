@@ -23,13 +23,12 @@ def batalha(jogador):
 
         time.sleep(1)
 
-        
+    
         if jogador_rolagem > monstro_rolagem:      
             dano = random.randint(1, jogador.ataque)
             monstro.vida -= dano
             usar_habilidade(jogador, monstro)
-            # print(f"{jogador.nome} atacou e causou {dano} de dano!")
-            
+                       
         elif monstro_rolagem > jogador_rolagem:
             dano = random.randint(1, monstro.ataque)
             jogador.vida -= dano

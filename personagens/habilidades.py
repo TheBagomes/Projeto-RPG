@@ -42,15 +42,15 @@ def habilidades_guerreiro(jogador, monstro):
 
 # ========================= MAGO =========================
 def habilidades_mago(jogador, monstro):
-    if jogador.tipo == "Fogo":
+    if jogador.tipo == "1":
         print("[1] Bola de Fogo (Custo: 15 mana) — dano alto")
         print("[2] Chama Mística (Custo: 10 mana) — dano médio")
         print("[3] Cura Ígnea (Custo: 20 mana) — cura 25 HP")
-    elif jogador.tipo == "Gelo":
+    elif jogador.tipo == "2":
         print("[1] Lança de Gelo (Custo: 15 mana) — dano médio + defesa temporária")
         print("[2] Nevasca (Custo: 25 mana) — dano alto")
         print("[3] Cura Congelada (Custo: 20 mana) — cura 20 HP")
-    else:  # Raio
+    elif jogador.tipo == "3":
         print("[1] Raio Elétrico (Custo: 15 mana) — dano médio")
         print("[2] Tempestade (Custo: 25 mana) — dano alto")
         print("[3] Cura Estática (Custo: 20 mana) — cura 20 HP")
