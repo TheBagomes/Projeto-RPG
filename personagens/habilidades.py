@@ -5,7 +5,7 @@ def usar_habilidade(jogador, monstro):
 
     if jogador.classe == "Guerreiro":
         habilidades_guerreiro(jogador, monstro)
-    elif jogador.classe == "Mago":
+    elif jogador.classe == "Magos":
         habilidades_mago(jogador, monstro)
     elif jogador.classe == "Atirador":
         habilidades_atirador(jogador, monstro)

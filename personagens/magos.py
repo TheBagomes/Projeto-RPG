@@ -2,6 +2,7 @@ class Magos:
     def __init__(self, nome):
         self.nome = nome
         self.classe = "Magos"
+        self.tipo = "1"
         self.vida = 60
         self.vida_max = 60
         self.ataque = 6
