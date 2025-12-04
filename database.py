@@ -1,70 +1,111 @@
 import sqlite3
 
-DB_FILE = "rpg_game.db"
+# ========================== CONEXÃO ==========================
+class ConexaoDB:
+    def __init__(self, nome="rpg.db"):
+        self.nome = nome
 
-def get_connection():
-    conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row
-    return conn
+    def conectar(self):
+        conn = sqlite3.connect(self.nome)
+        conn.row_factory = sqlite3.Row
+        return conn
 
-def create_tables():
-    conn = get_connection()
+conexao = ConexaoDB()
+
+# ========================== CRIAR TABELA ==========================
+def criar_tabela():
+    conn = conexao.conectar()
     c = conn.cursor()
+
     c.execute("""
-    CREATE TABLE IF NOT EXISTS personagens (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nome TEXT NOT NULL,
-        classe TEXT NOT NULL,
-        nivel INTEGER DEFAULT 1,
-        vida INTEGER DEFAULT 100,
-        vida_max INTEGER DEFAULT 100,
-        ataque INTEGER DEFAULT 10,
-        defesa INTEGER DEFAULT 5,
-        energia INTEGER DEFAULT 0,
-        mana INTEGER DEFAULT 0
-    )
+        CREATE TABLE IF NOT EXISTS personagens (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            classe TEXT NOT NULL,
+            tipo TEXT,
+            nivel INTEGER NOT NULL,
+            vida INTEGER NOT NULL,
+            vida_max INTEGER NOT NULL,
+            ataque INTEGER NOT NULL,
+            defesa INTEGER NOT NULL,
+            energia INTEGER,
+            mana INTEGER
+        )
     """)
+
     conn.commit()
     conn.close()
 
+
+# Cria a tabela automaticamente ao importar o módulo
+criar_tabela()
+
+# ========================== INSERIR ==========================
 def inserir_personagem(p):
-    conn = get_connection()
+    tipo = getattr(p, "tipo", None)
+    energia = getattr(p, "energia", None)
+    mana = getattr(p, "mana", None)
+
+    conn = conexao.conectar()
     c = conn.cursor()
-    energia = getattr(p, "energia", 0)
-    mana = getattr(p, "mana", 0)
+
     c.execute("""
-        INSERT INTO personagens (nome, classe, nivel, vida, vida_max, ataque, defesa, energia, mana)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (p.nome, p.classe, 1, p.vida, p.vida_max, p.ataque, p.defesa, energia, mana))
+        INSERT INTO personagens (nome, classe, tipo, nivel, vida, vida_max, ataque, defesa, energia, mana)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (p.nome, p.classe, tipo, 1, p.vida, p.vida_max, p.ataque, p.defesa, energia, mana))
+
     conn.commit()
     conn.close()
 
-
-def atualizar_personagem(p):
-    conn = get_connection()
+# ========================== BUSCAR PERSONAGEM ==========================
+def buscar_personagem(pid):
+    conn = conexao.conectar()
     c = conn.cursor()
-    energia = getattr(p, "energia", 0)
-    mana = getattr(p, "mana", 0)
-    c.execute("""
-        UPDATE personagens
-        SET vida=?, ataque=?, defesa=?, energia=?, mana=?
-        WHERE nome=? AND classe=?
-    """, (p.vida, p.ataque, p.defesa, energia, mana, p.nome, p.classe))
-    conn.commit()
-    conn.close()
 
+    c.execute("SELECT * FROM personagens WHERE id = ?", (pid,))
+    p = c.fetchone()
+
+    conn.close()
+    return p
+
+# ========================== LISTAR ==========================
 def listar_personagens():
-    conn = get_connection()
+    conn = conexao.conectar()
     c = conn.cursor()
+
     c.execute("SELECT * FROM personagens")
     dados = c.fetchall()
+
     conn.close()
     return dados
 
-def buscar_personagem(id_personagem):
-    conn = get_connection()
+# ========================== CARREGAR ==========================
+def carregar_personagem(pid):
+    return buscar_personagem(pid)
+
+# ========================== SALVAR ==========================
+def salvar_personagem(p):
+    conn = conexao.conectar()
     c = conn.cursor()
-    c.execute("SELECT * FROM personagens WHERE id = ?", (id_personagem,))
-    p = c.fetchone()
+
+    energia = getattr(p, "energia", None)
+    mana = getattr(p, "mana", None)
+    tipo = getattr(p, "tipo", None)
+
+    c.execute("""
+        UPDATE personagens
+        SET vida=?, vida_max=?, ataque=?, defesa=?, energia=?, mana=?, tipo=?, nivel=?
+        WHERE id=?
+    """, (p.vida, p.vida_max, p.ataque, p.defesa, energia, mana, tipo, p.nivel, p.id))
+
+    conn.commit()
     conn.close()
-    return p
+
+# ========================== EXCLUIR ==========================
+def excluir_personagem(pid):
+    conn = conexao.conectar()
+    c = conn.cursor()
+
+    c.execute("DELETE FROM personagens WHERE id = ?", (pid,))
+    conn.commit()
+    conn.close()

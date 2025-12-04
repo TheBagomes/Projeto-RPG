@@ -1,6 +1,6 @@
 from personagens.monstros import gerar_monstro
 from personagens.habilidades import usar_habilidade
-from database import atualizar_personagem
+from database import salvar_personagem
 import random, time
 
 def batalha(jogador):
@@ -34,4 +34,5 @@ def batalha(jogador):
     else:
         print(f"\n{jogador.nome} foi derrotado...")
 
-    atualizar_personagem(jogador)  
+        salvar_personagem(jogador)
+

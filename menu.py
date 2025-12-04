@@ -2,7 +2,7 @@ from personagens.guerreiro import Guerreiro
 from personagens.magos import Magos
 from personagens.atirador import Atirador
 from personagens.bardo import Bardo
-from database import inserir_personagem, listar_personagens, buscar_personagem
+from database import inserir_personagem, listar_personagens, carregar_personagem
 from menus.menu_jogo import batalha
 
 

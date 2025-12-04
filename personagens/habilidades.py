@@ -1,129 +1,86 @@
 import random
 
-def usar_habilidade(jogador, monstro):
-    print("\n=== ESCOLHA UMA HABILIDADE ===")
-
+def usar_habilidade(jogador, monstro, habilidade):
+    # Roteador: decide função por classe
     if jogador.classe == "Guerreiro":
-        habilidades_guerreiro(jogador, monstro)
+        _habilidades_guerreiro(jogador, monstro, habilidade)
     elif jogador.classe == "Magos":
-        habilidades_mago(jogador, monstro)
+        _habilidades_mago(jogador, monstro, habilidade)
     elif jogador.classe == "Atirador":
-        habilidades_atirador(jogador, monstro)
+        _habilidades_atirador(jogador, monstro, habilidade)
     elif jogador.classe == "Bardo":
-        habilidades_bardo(jogador, monstro)
+        _habilidades_bardo(jogador, monstro, habilidade)
     else:
-        print("Essa classe ainda não tem habilidades definidas.")
+        # fallback: aplicar dano pequeno
+        dano = random.randint(1, max(1, jogador.ataque))
+        monstro.vida = max(0, monstro.vida - dano)
 
-# ========================= GUERREIRO =========================
-def habilidades_guerreiro(jogador, monstro):
-    print("[1] Golpe Poderoso (Custo: 10 energia) — dano alto")
-    print("[2] Investida (Custo: 5 energia) — dano moderado")
-    print("[3] Recuperar Fôlego (Custo: 10 energia) — cura 20 HP")
-
-    escolha = input("Escolha: ")
-
-    if escolha == "1" and jogador.energia >= 10:
+# ---------------- GUERREIRO ----------------
+def _habilidades_guerreiro(j, m, hab):
+    if hab == "Golpe Poderoso" and getattr(j, "energia", 0) >= 10:
         dano = random.randint(15, 25)
-        jogador.energia -= 10
-        monstro.vida -= dano
-        print(f"{jogador.nome} usou Golpe Poderoso e causou {dano} de dano!")
-    elif escolha == "2" and jogador.energia >= 5:
+        j.energia -= 10
+        m.vida = max(0, m.vida - dano)
+    elif hab == "Investida" and getattr(j, "energia", 0) >= 5:
         dano = random.randint(10, 18)
-        jogador.energia -= 5
-        monstro.vida -= dano
-        print(f"{jogador.nome} usou Investida e causou {dano} de dano!")
-    elif escolha == "3" and jogador.energia >= 10:
+        j.energia -= 5
+        m.vida = max(0, m.vida - dano)
+    elif hab == "Recuperar Fôlego" and getattr(j, "energia", 0) >= 10:
         cura = 20
-        jogador.energia -= 10
-        jogador.vida = min(jogador.vida + cura, jogador.vida_max)
-        print(f"{jogador.nome} recuperou {cura} de vida!")
+        j.energia -= 10
+        j.vida = min(j.vida + cura, j.vida_max)
     else:
-        print("Energia insuficiente ou escolha inválida!")
+        # falha: nada acontece
+        pass
 
-# ========================= MAGO =========================
-def habilidades_mago(jogador, monstro):
-    if jogador.tipo == "1":
-        print("[1] Bola de Fogo (Custo: 15 mana) — dano alto")
-        print("[2] Chama Mística (Custo: 10 mana) — dano médio")
-        print("[3] Cura Ígnea (Custo: 20 mana) — cura 25 HP")
-    elif jogador.tipo == "2":
-        print("[1] Lança de Gelo (Custo: 15 mana) — dano médio + defesa temporária")
-        print("[2] Nevasca (Custo: 25 mana) — dano alto")
-        print("[3] Cura Congelada (Custo: 20 mana) — cura 20 HP")
-    elif jogador.tipo == "3":
-        print("[1] Raio Elétrico (Custo: 15 mana) — dano médio")
-        print("[2] Tempestade (Custo: 25 mana) — dano alto")
-        print("[3] Cura Estática (Custo: 20 mana) — cura 20 HP")
-
-    escolha = input("Escolha: ")
-
-    if escolha == "1" and jogador.mana >= 15:
-        dano = random.randint(18, 25)
-        jogador.mana -= 15
-        monstro.vida -= dano
-        print(f"{jogador.nome} lançou um ataque mágico e causou {dano} de dano!")
-    elif escolha == "2" and jogador.mana >= 25:
-        dano = random.randint(25, 35)
-        jogador.mana -= 25
-        monstro.vida -= dano
-        print(f"{jogador.nome} usou um feitiço poderoso e causou {dano} de dano!")
-    elif escolha == "3" and jogador.mana >= 20:
-        cura = 20
-        jogador.mana -= 20
-        jogador.vida = min(jogador.vida + cura, jogador.vida_max)
-        print(f"{jogador.nome} recuperou {cura} de vida!")
+# ---------------- MAGOS ----------------
+def _habilidades_mago(j, m, hab):
+    tipo = getattr(j, "subtipo", getattr(j, "tipo", "1"))
+    # mapa de habilidades por tipo
+    if tipo in ["1", "Fogo", "Mago de Fogo"]:
+        # Fogo
+        if hab == "Bola de Fogo" and j.mana >= 15:
+            dano = random.randint(18, 25); j.mana -= 15; m.vida = max(0, m.vida - dano)
+        elif hab == "Chama Mística" and j.mana >= 10:
+            dano = random.randint(12, 18); j.mana -= 10; m.vida = max(0, m.vida - dano)
+        elif hab == "Cura Ígnea" and j.mana >= 20:
+            cura = 20; j.mana -= 20; j.vida = min(j.vida + cura, j.vida_max)
+    elif tipo in ["2", "Gelo", "Mago de Gelo"]:
+        if hab == "Lança de Gelo" and j.mana >= 15:
+            dano = random.randint(14, 20); j.mana -= 15; m.vida = max(0, m.vida - dano)
+            # poderia aplicar algum buff de defesa no jogador (opcional)
+        elif hab == "Nevasca" and j.mana >= 25:
+            dano = random.randint(25, 35); j.mana -= 25; m.vida = max(0, m.vida - dano)
+        elif hab == "Cura Congelada" and j.mana >= 20:
+            cura = 20; j.mana -= 20; j.vida = min(j.vida + cura, j.vida_max)
     else:
-        print("Mana insuficiente ou escolha inválida!")
+        # Tipo 3 ou raios
+        if hab == "Raio Elétrico" and j.mana >= 15:
+            dano = random.randint(14, 20); j.mana -= 15; m.vida = max(0, m.vida - dano)
+        elif hab == "Tempestade" and j.mana >= 25:
+            dano = random.randint(25, 35); j.mana -= 25; m.vida = max(0, m.vida - dano)
+        elif hab == "Cura Estática" and j.mana >= 20:
+            cura = 20; j.mana -= 20; j.vida = min(j.vida + cura, j.vida_max)
 
-
-# ========================= ATIRADOR =========================
-def habilidades_atirador(jogador, monstro):
-    print("[1] Tiro Certeiro (Custo: 10 energia) — dano alto")
-    print("[2] Disparo Duplo (Custo: 8 energia) — dano médio")
-    print("[3] Foco (Custo: 5 energia) — recupera 10 energia")
-
-    escolha = input("Escolha: ")
-
-    if escolha == "1" and jogador.energia >= 10:
-        dano = random.randint(15, 25)
-        jogador.energia -= 10
-        monstro.vida -= dano
-        print(f"{jogador.nome} usou Tiro Certeiro e causou {dano} de dano!")
-    elif escolha == "2" and jogador.energia >= 8:
-        dano = random.randint(10, 18)
-        jogador.energia -= 8
-        monstro.vida -= dano
-        print(f"{jogador.nome} disparou duas flechas e causou {dano} de dano!")
-    elif escolha == "3" and jogador.energia >= 5:
-        jogador.energia = min(jogador.energia + 10, 60)
-        jogador.energia -= 5
-        print(f"{jogador.nome} focou sua energia e recuperou parte do vigor!")
+# ---------------- ATIRADOR ----------------
+def _habilidades_atirador(j, m, hab):
+    if hab == "Tiro Certeiro" and getattr(j, "energia", 0) >= 10:
+        dano = random.randint(15, 25); j.energia -= 10; m.vida = max(0, m.vida - dano)
+    elif hab == "Disparo Duplo" and getattr(j, "energia", 0) >= 8:
+        dano = random.randint(10, 18); j.energia -= 8; m.vida = max(0, m.vida - dano)
+    elif hab == "Foco" and getattr(j, "energia", 0) >= 5:
+        j.energia = min(getattr(j, "energia", 0) + 10, 60)
+        j.energia -= 5  # custo
     else:
-        print("Energia insuficiente ou escolha inválida!")
+        pass
 
-
-# ========================= BARDO =========================
-def habilidades_bardo(jogador, monstro):
-    print("[1] Melodia Afiada (Custo: 10 mana) — dano médio")
-    print("[2] Canção Inspiradora (Custo: 15 mana) — aumenta vida em 20")
-    print("[3] Acorde Fatal (Custo: 20 mana) — dano alto")
-
-    escolha = input("Escolha: ")
-
-    if escolha == "1" and jogador.mana >= 10:
-        dano = random.randint(10, 20)
-        jogador.mana -= 10
-        monstro.vida -= dano
-        print(f"{jogador.nome} tocou Melodia Afiada e causou {dano} de dano!")
-    elif escolha == "2" and jogador.mana >= 15:
-        cura = 20
-        jogador.mana -= 15
-        jogador.vida = min(jogador.vida + cura, jogador.vida_max)
-        print(f"{jogador.nome} tocou uma canção e recuperou {cura} de vida!")
-    elif escolha == "3" and jogador.mana >= 20:
-        dano = random.randint(20, 30)
-        jogador.mana -= 20
-        monstro.vida -= dano
-        print(f"{jogador.nome} tocou o Acorde Fatal e causou {dano} de dano!")
+# ---------------- BARDO ----------------
+def _habilidades_bardo(j, m, hab):
+    if hab == "Melodia Afiada" and getattr(j, "mana", 0) >= 10:
+        dano = random.randint(10, 20); j.mana -= 10; m.vida = max(0, m.vida - dano)
+    elif hab == "Canção Inspiradora" and getattr(j, "mana", 0) >= 15:
+        cura = 20; j.mana -= 15; j.vida = min(j.vida + cura, j.vida_max)
+    elif hab == "Acorde Fatal" and getattr(j, "mana", 0) >= 20:
+        dano = random.randint(20, 30); j.mana -= 20; m.vida = max(0, m.vida - dano)
     else:
-        print("Mana insuficiente ou escolha inválida!")
+        pass
